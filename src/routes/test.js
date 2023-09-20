@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const Test = require('../models/test');
+const testLib = require('../libs/test');
 
 // Fetch All
 router.get('/', async (req, res) => {
     try {
-        const test = await Test.find();
+        const test = await testLib.getAllTests();
         res.json(test);
     } catch (err) {
         console.error(err);
@@ -19,12 +19,8 @@ router.get('/:id', (req, res) => {
 
 // Create one
 router.post('/', async (req, res) => {
-    const test = new Test({
-        name: req.body.name,
-        description: req.body.description
-    })
     try {
-        const newTest = await test.save();
+        const newTest = await testLib.addTest(req.body);
         res.json(newTest);
     } catch (err) {
         console.error(err);
