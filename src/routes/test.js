@@ -13,8 +13,16 @@ router.get('/', async (req, res) => {
 });
 
 // Fetch one
-router.get('/:id', (req, res) => {
-
+router.get('/:id', async (req, res) => {
+    try {
+        const test = await testLib.getById(req.params.id);
+        if (test == null) {
+            res.status(404).json({ message: 'Cannot find requested id' });
+        } 
+        res.json(test);
+    } catch (err) {
+        console.error(err);
+    }
 });
 
 // Create one
@@ -28,13 +36,23 @@ router.post('/', async (req, res) => {
 });
 
 // Update one
-router.patch('/:id', (req, res) => {
-
+router.patch('/:id', async (req, res) => {
+    try {
+        const updatedTest = await testLib.updateById(req.params.id, req.body);
+        res.json(updatedTest);
+    } catch (err) {
+        console.error(err);
+    }
 });
 
 // Delete one
-router.delete('/:id', (req, res) => {
-
+router.delete('/:id', async (req, res) => {
+    try {
+        const deletedTest = await testLib.deleteById(req.params.id);
+        res.json(deletedTest);
+    } catch (err) {
+        console.error(err);
+    }
 });
 
 module.exports = router;

@@ -9,7 +9,7 @@ const testSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    UpdatedAt: {
+    updatedAt: {
         type: Date,
         required: true,
         default: Date.now
