@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const testLib = require('../libs/test');
+const loadDetailsLib = require('../libs/loadDetails');
 
 // Fetch All
 router.get('/', async (req, res) => {
     try {
-        const test = await testLib.getAllTests();
-        res.json(test);
+        const load = await loadDetailsLib.getAllLoads();
+        res.json(load);
     } catch (err) {
         console.error(err);
     }
@@ -15,11 +15,11 @@ router.get('/', async (req, res) => {
 // Fetch one
 router.get('/:id', async (req, res) => {
     try {
-        const test = await testLib.getById(req.params.id);
-        if (test == null) {
+        const load = await loadDetailsLib.getLoadById(req.params.id);
+        if (load == null) {
             res.status(404).json({ message: 'Cannot find requested id' });
         } 
-        res.json(test);
+        res.json(load);
     } catch (err) {
         console.error(err);
     }
@@ -28,8 +28,8 @@ router.get('/:id', async (req, res) => {
 // Create one
 router.post('/', async (req, res) => {
     try {
-        const newTest = await testLib.addTest(req.body);
-        res.json(newTest);
+        const newLoad = await loadDetailsLib.addLoad(req.body);
+        res.json(newLoad);
     } catch (err) {
         console.error(err);
     }
@@ -38,8 +38,8 @@ router.post('/', async (req, res) => {
 // Update one
 router.patch('/:id', async (req, res) => {
     try {
-        const updatedTest = await testLib.updateById(req.params.id, req.body);
-        res.json(updatedTest);
+        const updatedLoad = await loadDetailsLib.updateLoadById(req.params.id, req.body);
+        res.json(updatedLoad);
     } catch (err) {
         console.error(err);
     }
@@ -48,8 +48,8 @@ router.patch('/:id', async (req, res) => {
 // Delete one
 router.delete('/:id', async (req, res) => {
     try {
-        const deletedTest = await testLib.deleteById(req.params.id);
-        res.json(deletedTest);
+        const deletedLoad = await loadDetailsLib.deleteLoadById(req.params.id);
+        res.json(deletedLoad);
     } catch (err) {
         console.error(err);
     }
