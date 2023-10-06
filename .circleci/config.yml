@@ -17,7 +17,7 @@ jobs:
       - run: echo "this is the build job"
   test: 
     docker:
-      - image: cimg/node:erbium-bullseye-browsers-legacy
+      - image: circleci/node:erbium-bullseye-browsers-legacy
     steps:
       - checkout
       - run: echo "this is the test job"
