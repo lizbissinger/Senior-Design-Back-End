@@ -9,12 +9,12 @@ jobs:
     steps:
       - checkout
       - node/install-packages:
-          pkg-manager: npm
+          pkg-manager: yarn
       - run:
-          command: npm run test
+          command: yarn test
           name: Run tests
       - run:
-          command: npm run build
+          command: yarn build
           name: Build app
       - persist_to_workspace:
           root: ~/project
