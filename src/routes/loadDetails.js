@@ -6,7 +6,6 @@ const loadDetailsLib = require('../libs/loadDetails');
 router.get('/', async (req, res) => {
     try {
         const load = await loadDetailsLib.getAllLoads();
-        res.setHeader("Access-Control-Allow-Origin", "*");
         res.json(load);
     } catch (err) {
         console.error(err);

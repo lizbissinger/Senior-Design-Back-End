@@ -24,7 +24,7 @@ async function addLoad (load) {
         allMiles: load.allMiles,
         fuelGallons: load.fuelGallons,
         status: load.status,
-        brokerInfo: load.brokerInfo,
+        brokerInfo: load.brokerInfo.name,
         comments: load.comments,
         createdAt: Date.now(),
         updatedAt: Date.now()
