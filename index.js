@@ -24,3 +24,7 @@ db.once('open', () => console.log('Connected to MongoDB'));
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
