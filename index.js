@@ -3,12 +3,14 @@ const express = require("express");
 const mongoose = require('mongoose');
 const cors = require('cors');
 const loadDetailsRouter = require('./src/routes/loadDetails');
+const driverDetailsRouter = require('./src/routes/driverDetails');
 const app = express();
 
 // Mount middleware and routes
 app.use(express.json());
 app.use(cors());
 app.use('/loadDetails', loadDetailsRouter);
+app.use('/driverDetails', driverDetailsRouter);
 
 // .env properties
 const PORT = process.env.PORT || 3000;
