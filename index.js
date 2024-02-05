@@ -7,6 +7,7 @@ const driverDetailsRouter = require('./src/routes/driverDetails');
 const trailerDetailsRouter = require('./src/routes/trailerDetails');
 const truckDetailsRouter = require('./src/routes/truckDetails');
 const reportsRouter = require('./src/routes/reports');
+const repairDetailsRouter = require('./src/routes/repairDetails');
 const app = express();
 
 // Mount middleware and routes
@@ -17,6 +18,7 @@ app.use('/driverDetails', driverDetailsRouter);
 app.use('/trailerDetails', trailerDetailsRouter);
 app.use('/truckDetails', truckDetailsRouter);
 app.use('/reports', reportsRouter);
+app.use('/repairDetails', repairDetailsRouter);
 
 // .env properties
 const PORT = process.env.PORT || 3000;
