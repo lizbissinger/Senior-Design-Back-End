@@ -7,8 +7,8 @@ async function addRepair(repair) {
         repairCost: repair.repairCost,
         repairDate: repair.repairDate,
         repairComments: repair.repairComments,
-    truckObject: repair.truckObject,
-    trailerObject: repair.trailerObject
+        truckObject: repair.truckObject,
+        trailerObject: repair.trailerObject
     });
     try {
         newRepair = await newRepair.save();

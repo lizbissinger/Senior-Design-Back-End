@@ -13,5 +13,14 @@ router.get("/", async (req, res) => {
   }
 });
 
-
+//Create Repair
+router.post("/", async (req, res) => {
+  try {
+    const newRepair = await RepairDetailLib.addRepair(req.body);
+    res.json(newRepair);
+  } catch (err) {
+    console.error("Error creating Repair:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 module.exports = router;

@@ -18,7 +18,7 @@ app.use('/driverDetails', driverDetailsRouter);
 app.use('/trailerDetails', trailerDetailsRouter);
 app.use('/truckDetails', truckDetailsRouter);
 app.use('/reports', reportsRouter);
-app.use('/repairDetails', repairDetailsRouter);
+app.use('/repairs', repairDetailsRouter);
 
 // .env properties
 const PORT = process.env.PORT || 3000;
