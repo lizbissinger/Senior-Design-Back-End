@@ -11,3 +11,4 @@ yarn.lock
 
 # Environment properties
 .env
+.history
