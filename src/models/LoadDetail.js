@@ -25,6 +25,14 @@ const LoadDetailSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    pickupLocation: {
+        type: String,
+        required: true
+    },
+    deliveryLocation: {
+        type: String,
+        required: true
+    },
     documents: {
         type: String,
         required: false
