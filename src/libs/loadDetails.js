@@ -16,8 +16,6 @@ async function addLoad (load) {
         truckObject: load.truckObject,
         trailerObject: load.trailerObject,
         driverObject: load.driverObject,
-        pickupLocation: load.pickupLocation,
-        deliveryLocation: load.deliveryLocation,
         pickupTime: load.pickupTime,
         deliveryTime: load.deliveryTime,
         documents: load.documents,
