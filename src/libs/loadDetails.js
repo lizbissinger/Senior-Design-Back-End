@@ -18,6 +18,8 @@ async function addLoad (load) {
         driverObject: load.driverObject,
         pickupTime: load.pickupTime,
         deliveryTime: load.deliveryTime,
+        pickupLocation: load.pickupLocation,
+        deliveryLocation: load.deliveryLocation,
         documents: load.documents,
         price: load.price,
         detentionPrice: load.detentionPrice,
