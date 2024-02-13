@@ -4,17 +4,8 @@ const reportsLib = require('../libs/reports');
 
 router.get('/allRevenue', async (req, res) => {
     try {
-        const reports = await reportsLib.getAllRevenueByDateRange();
-        res.json(reports);
-    } catch (err) {
-        console.error(err);
-    }
-});
-
-router.get('/driverRevenue', async (req, res) => {
-    try {
-        const reports = await reportsLib.getDriverRevenueByDateRange(req.query.driver);
-        res.json(reports);
+        const data = await reportsLib.getAllRevenue(req.query.driver, req.query.from, req.query.to);
+        res.json(data);
     } catch (err) {
         console.error(err);
     }
