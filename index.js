@@ -24,7 +24,7 @@ app.use('/payroll', payrollDetailsRouter); //try payrolls
 
 // .env properties
 const PORT = process.env.PORT || 3000;
-const db_url = process.env.DB_URL_MAIN;
+const db_url = process.env.DB_URL;
 
 // MongoDB cluster connection
 mongoose.connect(db_url);
