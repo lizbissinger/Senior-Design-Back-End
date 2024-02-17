@@ -8,6 +8,7 @@ const trailerDetailsRouter = require('./src/routes/trailerDetails');
 const truckDetailsRouter = require('./src/routes/truckDetails');
 const reportsRouter = require('./src/routes/reports');
 const repairDetailsRouter = require('./src/routes/repairDetails');
+const payrollDetailsRouter = require('./src/routes/payrollDetails');
 const app = express();
 
 // Mount middleware and routes
@@ -19,10 +20,11 @@ app.use('/trailerDetails', trailerDetailsRouter);
 app.use('/truckDetails', truckDetailsRouter);
 app.use('/reports', reportsRouter);
 app.use('/repairs', repairDetailsRouter);
+app.use('/payroll', payrollDetailsRouter); //try payrolls
 
 // .env properties
 const PORT = process.env.PORT || 3000;
-const db_url = process.env.DB_URL;
+const db_url = process.env.DB_URL_MAIN;
 
 // MongoDB cluster connection
 mongoose.connect(db_url);
