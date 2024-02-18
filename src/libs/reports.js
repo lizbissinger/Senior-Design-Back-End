@@ -78,11 +78,17 @@ async function getAllRevenue (driver = null, from = null, to = null) {
                                 $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
                             }
                         },
+                        year : {
+                            $year: {
+                                $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
+                            }
+                        }
                     }
                 },
                 revenue: { $sum: "$price" }
             }
             query[2].$sort = {
+                "_id.date.year": 1,
                 "_id.date.month": 1,
                 "_id.date.day": 1
             }
@@ -111,11 +117,23 @@ async function getAllRevenue (driver = null, from = null, to = null) {
                                 $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
                             },
                         },
+                        month : {
+                            $month: {
+                                $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
+                            }
+                        },
+                        year : {
+                            $year: {
+                                $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
+                            }
+                        }
                     } 
                 },
                 revenue: { $sum: "$price" },
             }
             query[2].$sort = {
+                "_id.date.year": 1,
+                "_id.date.month": 1,
                 "_id.date.week": 1
             }
             data = await LoadDetail.aggregate(query);
