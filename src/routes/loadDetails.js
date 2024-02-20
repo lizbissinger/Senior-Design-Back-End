@@ -4,6 +4,7 @@ const multer = require("multer");
 const loadDetailsLib = require("../libs/loadDetails");
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+const LoadDetail = require("../models/LoadDetail");
 
 // Fetch All
 router.get("/", async (req, res) => {
@@ -85,6 +86,80 @@ router.delete("/:id", async (req, res) => {
     res.json(deletedLoad);
   } catch (err) {
     console.error(err);
+  }
+});
+
+// Fetches ONLY the metadata of all documents for a specific load
+router.get("/:loadId/documents/metadata", async (req, res) => {
+  const { loadId } = req.params;
+
+  try {
+    const load = await LoadDetail.findById(
+      loadId,
+      "documents.fileName documents.contentType documents._id"
+    );
+    if (!load) {
+      return res.status(404).json({ message: "Load not found" });
+    }
+
+    const documentsMetadata = load.documents.map((doc) => ({
+      _id: doc._id,
+      fileName: doc.fileName,
+      contentType: doc.contentType,
+    }));
+
+    res.json({ documents: documentsMetadata });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Endpoint to fetch all documents including binary data for a specific load
+router.get("/:loadId/documents", async (req, res) => {
+  const { loadId } = req.params;
+
+  try {
+    const load = await LoadDetail.findById(loadId).select("documents");
+    if (!load) {
+      return res.status(404).json({ message: "Load not found" });
+    }
+
+    const documentsWithBinaryData = load.documents.map((doc) => ({
+      _id: doc._id,
+      fileName: doc.fileName,
+      contentType: doc.contentType,
+      data: doc.data.toString("base64"),
+    }));
+
+    res.json({ documents: documentsWithBinaryData });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Endpoint to fetch a specific document's binary data
+router.get("/:loadId/documents/:documentId", async (req, res) => {
+  const { loadId, documentId } = req.params;
+
+  try {
+    const load = await LoadDetail.findById(loadId);
+    if (!load) {
+      return res.status(404).json({ message: "Load not found" });
+    }
+
+    const document = load.documents.id(documentId);
+    if (!document) {
+      return res.status(404).json({ message: "Document not found" });
+    }
+
+    res.type(document.contentType);
+
+    res.send(document.data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
