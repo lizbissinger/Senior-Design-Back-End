@@ -52,16 +52,29 @@ router.post("/", upload.array("documents", 5), async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
-// Update one
-router.patch("/:id", async (req, res) => {
+// Update Load
+router.patch("/:id", upload.array("documents"), async (req, res) => {
+  const documents = req.files.map((file) => ({
+    data: file.buffer,
+    contentType: file.mimetype,
+    fileName: file.originalname,
+  }));
+
+  const updateData = {
+    ...req.body,
+    documents: documents,
+    updatedAt: new Date(),
+  };
+
   try {
     const updatedLoad = await loadDetailsLib.updateLoadById(
       req.params.id,
-      req.body
+      updateData
     );
     res.json(updatedLoad);
   } catch (err) {
     console.error(err);
+    res.status(500).json({ message: err.message });
   }
 });
 

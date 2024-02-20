@@ -56,15 +56,16 @@ async function getLoadById(id) {
   return load;
 }
 
-async function updateLoadById(id, load) {
-  let updatedLoad;
-  load.updatedAt = Date.now();
+async function updateLoadById(id, updateData) {
   try {
-    updatedLoad = await LoadDetail.updateOne({ _id: id }, load);
+    const updatedLoad = await LoadDetail.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+    return updatedLoad;
   } catch (err) {
     console.error(err);
+    throw err;
   }
-  return updatedLoad;
 }
 
 async function deleteLoadById(id) {
