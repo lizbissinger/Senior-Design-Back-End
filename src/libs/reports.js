@@ -50,7 +50,7 @@ async function getAllRevenue (driver = null, from = null, to = null) {
                 date: {
                     day : {
                         $dayOfMonth: {
-                            $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
+                            $dateFromString: { dateString: "$deliveryTime" }
                         }
                     },
                 }
@@ -70,17 +70,17 @@ async function getAllRevenue (driver = null, from = null, to = null) {
                     date: {
                         day : {
                             $dayOfMonth: {
-                                $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
+                                $dateFromString: { dateString: "$deliveryTime" }
                             }
                         },
                         month : {
                             $month: {
-                                $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
+                                $dateFromString: { dateString: "$deliveryTime" }
                             }
                         },
                         year : {
                             $year: {
-                                $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
+                                $dateFromString: { dateString: "$deliveryTime" }
                             }
                         }
                     }
@@ -114,17 +114,17 @@ async function getAllRevenue (driver = null, from = null, to = null) {
                     date: {
                         week : {
                             $week: {
-                                $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
+                                $dateFromString: { dateString: "$deliveryTime" }
                             },
                         },
                         month : {
                             $month: {
-                                $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
+                                $dateFromString: { dateString: "$deliveryTime" }
                             }
                         },
                         year : {
                             $year: {
-                                $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
+                                $dateFromString: { dateString: "$deliveryTime" }
                             }
                         }
                     } 
@@ -156,12 +156,12 @@ async function getAllRevenue (driver = null, from = null, to = null) {
                     date: {
                         month : {
                             $month: {
-                                $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
+                                $dateFromString: { dateString: "$deliveryTime" }
                             }
                         },
                         year : {
                             $year: {
-                                $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
+                                $dateFromString: { dateString: "$deliveryTime" }
                             }
                         },
                     } 
@@ -194,7 +194,7 @@ async function getAllRevenue (driver = null, from = null, to = null) {
                     date: {
                         year : {
                             $year: {
-                                $dateFromString: { dateString: "$deliveryTime", format: "%Y-%m-%dT%H:%M" }
+                                $dateFromString: { dateString: "$deliveryTime" }
                             }
                         },
                     } 
