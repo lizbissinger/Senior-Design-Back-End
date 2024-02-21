@@ -61,8 +61,10 @@ const LoadDetailSchema = new mongoose.Schema({
     required: false,
   },
   brokerInfo: {
-    type: String,
-    required: false,
+    name: { type: String, required: false },
+    phoneNumber: { type: String, required: false },
+    email: { type: String, required: false },
+    company: { type: String, required: false },
   },
   comments: {
     type: String,
