@@ -33,13 +33,10 @@ const LoadDetailSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  documents: [
-    {
-      data: Buffer,
-      contentType: String,
-      fileName: String,
-    },
-  ],
+  documents: {
+    type: String,
+    required: false,
+  },
   price: {
     type: Number,
     required: true,
@@ -61,10 +58,8 @@ const LoadDetailSchema = new mongoose.Schema({
     required: false,
   },
   brokerInfo: {
-    name: { type: String, required: false },
-    phoneNumber: { type: String, required: false },
-    email: { type: String, required: false },
-    company: { type: String, required: false },
+    type: String,
+    required: false,
   },
   comments: {
     type: String,
