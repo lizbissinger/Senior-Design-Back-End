@@ -43,6 +43,8 @@ router.post("/", upload.array("documents", 5), async (req, res) => {
       contentType: file.mimetype,
       fileName: file.originalname,
     }));
+  } else {
+    load.documents = load.documents || [];
   }
 
   try {
@@ -53,6 +55,7 @@ router.post("/", upload.array("documents", 5), async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 });
+
 // Update Load
 
 router.patch("/:id", upload.array("documents"), async (req, res) => {
@@ -72,14 +75,16 @@ router.patch("/:id", upload.array("documents"), async (req, res) => {
   };
 
   try {
-    const updatedLoad = await loadDetailsLib.updateLoadById(req.params.id, updateData);
+    const updatedLoad = await loadDetailsLib.updateLoadById(
+      req.params.id,
+      updateData
+    );
     res.json(updatedLoad);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });
   }
 });
-
 
 // Delete one
 router.delete("/:id", async (req, res) => {
