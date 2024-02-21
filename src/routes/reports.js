@@ -11,4 +11,22 @@ router.get('/allRevenue', async (req, res) => {
     }
 });
 
+router.get('/revenuePerMile', async (req, res) => {
+    try {
+        const data = await reportsLib.getRevenuePerMile(req.query.driver, req.query.from, req.query.to);
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+router.get('/numberOfMiles', async (req, res) => {
+    try {
+        const data = await reportsLib.getNumberOfMiles(req.query.driver, req.query.from, req.query.to);
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+    }
+});
+
 module.exports = router;
