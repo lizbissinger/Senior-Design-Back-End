@@ -124,15 +124,23 @@ router.get("/:loadId/documents", async (req, res) => {
     if (!load) {
       return res.status(404).json({ message: "Load not found" });
     }
+    if (load.documents && load.documents.length > 0) {
+      const documentsWithBinaryData = load.documents.reduce((acc, doc) => {
+        if (doc.data) {
+          acc.push({
+            _id: doc._id,
+            fileName: doc.fileName,
+            contentType: doc.contentType,
+            data: doc.data.toString("base64"),
+          });
+        }
+        return acc;
+      }, []);
 
-    const documentsWithBinaryData = load.documents.map((doc) => ({
-      _id: doc._id,
-      fileName: doc.fileName,
-      contentType: doc.contentType,
-      data: doc.data.toString("base64"),
-    }));
-
-    res.json({ documents: documentsWithBinaryData });
+      res.json({ documents: documentsWithBinaryData });
+    } else {
+      res.json({ documents: [] });
+    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
