@@ -365,7 +365,82 @@ async function getNumberOfMiles (driver = null, from = null, to = null) {
             date.setMonth(d._id.date.month - 1);
             const obj = {};
             obj.date = `${date.toLocaleString('en-US', { month: 'short' }, { timeZone: "UTC" })} ${d._id.date.day.toString().length == 1 ? (`0`+ d._id.date.day) : d._id.date.day}`;
-            obj.miles = d.miles
+            obj.miles = d.miles;
+            formattedData.push(obj);
+        });
+
+    } catch (err) {
+        console.log(err);
+    }
+    return formattedData;
+};
+
+async function getCountOfLoads (driver = null, from = null, to = null) {
+    let formattedData = [];
+
+    try {
+        let query;
+        let data;
+
+        // create query layout
+        query = [
+            { $match : {  } },
+            { $group: {  }  },
+            { $sort: {  } },
+        ];
+
+        // add driver filter if any
+        if(driver.length > 0 && driver != "null"){
+            query[0].$match["driverObject"] = driver;
+        }
+
+        // add date picker filter if any
+        if (from != "null" && to != "null") {
+            const _from = new Date(from);
+            const _to = new Date(to);
+            _to.setHours(23);
+            _to.setMinutes(59);
+            query[0].$match["deliveryTime"] = { 
+                $gte: _from.toISOString(), 
+                $lt: _to.toISOString()
+            }
+        }
+
+        query[1].$group = {
+            _id: {
+                date: {
+                    day : {
+                        $dayOfMonth: {
+                            $dateFromString: { dateString: "$deliveryTime" }
+                        }
+                    },
+                    month : {
+                        $month: {
+                            $dateFromString: { dateString: "$deliveryTime" }
+                        }
+                    },
+                    year : {
+                        $year: {
+                            $dateFromString: { dateString: "$deliveryTime" }
+                        }
+                    }
+                }
+            },
+            loadCount: { $count: {  } }
+        }
+        query[2].$sort = {
+            "_id.date.year": 1,
+            "_id.date.month": 1,
+            "_id.date.day": 1
+        }
+
+        data = await LoadDetail.aggregate(query);
+        data.map((d) => {
+            const date = new Date();
+            date.setMonth(d._id.date.month - 1);
+            const obj = {};
+            obj.date = `${date.toLocaleString('en-US', { month: 'short' }, { timeZone: "UTC" })} ${d._id.date.day.toString().length == 1 ? (`0`+ d._id.date.day) : d._id.date.day}`;
+            obj.loadCount = d.loadCount;
             formattedData.push(obj);
         });
 
@@ -378,3 +453,4 @@ async function getNumberOfMiles (driver = null, from = null, to = null) {
 module.exports.getAllRevenue = getAllRevenue;
 module.exports.getRevenuePerMile = getRevenuePerMile;
 module.exports.getNumberOfMiles = getNumberOfMiles;
+module.exports.getCountOfLoads = getCountOfLoads;

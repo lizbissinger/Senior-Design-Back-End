@@ -29,4 +29,13 @@ router.get('/numberOfMiles', async (req, res) => {
     }
 });
 
+router.get('/loadCount', async (req, res) => {
+    try {
+        const data = await reportsLib.getCountOfLoads(req.query.driver, req.query.from, req.query.to);
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+    }
+});
+
 module.exports = router;
