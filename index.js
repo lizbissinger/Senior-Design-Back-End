@@ -24,6 +24,7 @@ app.use('/repairs', repairDetailsRouter);
 app.use('/payroll', payrollDetailsRouter); //try payrolls
 app.use('/fuel', fuelRouter);
 
+
 // .env properties
 const PORT = process.env.PORT || 3000;
 const db_url = process.env.DB_URL;
