@@ -1,4 +1,7 @@
 const LoadDetail = require('../models/LoadDetail');
+const RepairDetail = require('../models/RepairDetail');
+const PayrollDetail = require('../models/PayrollDetail');
+const FuelDetail = require('../models/Fuel');
 
 async function getAllRevenue (driver = null, from = null, to = null) {
     let formattedData = [];
@@ -450,7 +453,101 @@ async function getCountOfLoads (driver = null, from = null, to = null) {
     return formattedData;
 };
 
+async function getExpensesByCategory (from = null, to = null) {
+    let formattedData = [];
+
+    try {
+        let repairQuery;
+        let repairData;
+        let payrollQuery;
+        let payrollData;
+        let fuelQuery;
+        let fuelData;
+
+        // create query layout
+        repairQuery = [
+            { $match : {  } },
+        ];
+        payrollQuery = [
+            { $match : {  } },
+        ];
+        fuelQuery = [
+            { $match : {  } },
+        ];
+
+        // add date picker filter if any
+        if (from != "null" && to != "null") {
+            const _from = new Date(from);
+            const _to = new Date(to);
+            _to.setHours(23);
+            _to.setMinutes(59);
+            repairQuery[0].$match["repairDate"] = { 
+                $gte: _from.toISOString(), 
+                $lt: _to.toISOString()
+            };
+            payrollQuery[0].$match["payrollDate"] = { 
+                $gte: _from.toISOString(), 
+                $lt: _to.toISOString()
+            };
+            fuelQuery[0].$match["date"] = { 
+                $gte: _from.toISOString(), 
+                $lt: _to.toISOString()
+            };
+        }
+
+        repairData = await RepairDetail.aggregate(repairQuery);
+        payrollData = await PayrollDetail.aggregate(payrollQuery);
+        fuelData = await FuelDetail.aggregate(fuelQuery);
+
+        let repairTotal = 0;
+        repairData.map((repair) => {
+            repairTotal = repairTotal + parseInt(repair.repairCost);
+        });
+        
+        let payrollTotal = 0;
+        payrollData.map((payroll) => {
+            payrollTotal = payrollTotal + parseInt(payroll.payrollCost);
+        });
+
+        let fuelTotal = 0;
+        fuelData.map((fuel) => {
+            fuelTotal = fuelTotal + parseInt(fuel.cost);
+        });
+
+        const total = repairTotal + payrollTotal + fuelTotal;
+        const repairShare = repairTotal > 0 ? Math.round(((repairTotal / total) * 100) * 10) /10 : 0;
+        const payrollShare = payrollTotal > 0 ? Math.round(((payrollTotal / total) * 100) * 10) /10 : 0;
+        const fuelShare = fuelTotal > 0 ? Math.round(((fuelTotal / total) * 100) * 10) /10 : 0;
+
+        formattedData.push({
+            name: 'Repair Expense',
+            amount: repairTotal,
+            share: `${repairShare}%`,
+            color: 'bg-indigo-500',
+        });
+
+        formattedData.push({
+            name: 'Payroll Expense',
+            amount: payrollTotal,
+            share: `${payrollShare}%`,
+            color: 'bg-violet-500',
+        });
+
+        formattedData.push({
+            name: 'Fuel Expense',
+            amount: fuelTotal,
+            share: `${fuelShare}%`,
+            color: 'bg-fuchsia-500',
+        });
+
+    } catch (err) {
+        console.log(err);
+    }
+    return formattedData;
+};
+
 module.exports.getAllRevenue = getAllRevenue;
 module.exports.getRevenuePerMile = getRevenuePerMile;
 module.exports.getNumberOfMiles = getNumberOfMiles;
 module.exports.getCountOfLoads = getCountOfLoads;
+module.exports.getExpensesByCategory = getExpensesByCategory;

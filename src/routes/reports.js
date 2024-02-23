@@ -38,4 +38,13 @@ router.get('/loadCount', async (req, res) => {
     }
 });
 
+router.get('/expenses', async (req, res) => {
+    try {
+        const data = await reportsLib.getExpensesByCategory(req.query.from, req.query.to);
+        res.json(data);
+    } catch (err) {
+        console.error(err);
+    }
+});
+
 module.exports = router;
