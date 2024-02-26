@@ -523,14 +523,14 @@ async function getExpensesByCategory (from = null, to = null) {
             name: 'Repair Expense',
             amount: repairTotal,
             share: `${repairShare}%`,
-            color: 'bg-indigo-500',
+            color: 'bg-cyan-500',
         });
 
         formattedData.push({
             name: 'Payroll Expense',
             amount: payrollTotal,
             share: `${payrollShare}%`,
-            color: 'bg-violet-500',
+            color: 'bg-indigo-400',
         });
 
         formattedData.push({
