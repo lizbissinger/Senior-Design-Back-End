@@ -291,7 +291,7 @@ async function getRevenuePerMile (driver = null, from = null, to = null) {
             date.setMonth(d._id.date.month - 1);
             const obj = {};
             obj.date = `${date.toLocaleString('en-US', { month: 'short' }, { timeZone: "UTC" })} ${d._id.date.day.toString().length == 1 ? (`0`+ d._id.date.day) : d._id.date.day}`;
-            obj.revenuePerMile = Math.round(((d.revenue / d.miles) + Number.EPSILON) * 100) / 100;
+            obj["Revenue per mile"] = Math.round(((d.revenue / d.miles) + Number.EPSILON) * 100) / 100;
             obj.revenue = d.revenue;
             obj.miles = d.miles;
             formattedData.push(obj);
@@ -354,7 +354,7 @@ async function getNumberOfMiles (driver = null, from = null, to = null) {
                     }
                 }
             },
-            miles: { $sum: "$allMiles" }
+            Miles: { $sum: "$allMiles" }
         }
         query[2].$sort = {
             "_id.date.year": 1,
@@ -368,7 +368,7 @@ async function getNumberOfMiles (driver = null, from = null, to = null) {
             date.setMonth(d._id.date.month - 1);
             const obj = {};
             obj.date = `${date.toLocaleString('en-US', { month: 'short' }, { timeZone: "UTC" })} ${d._id.date.day.toString().length == 1 ? (`0`+ d._id.date.day) : d._id.date.day}`;
-            obj.miles = d.miles;
+            obj.Miles = d.Miles;
             formattedData.push(obj);
         });
 
@@ -429,7 +429,7 @@ async function getCountOfLoads (driver = null, from = null, to = null) {
                     }
                 }
             },
-            loadCount: { $count: {  } }
+            Loads: { $count: {  } }
         }
         query[2].$sort = {
             "_id.date.year": 1,
@@ -443,7 +443,7 @@ async function getCountOfLoads (driver = null, from = null, to = null) {
             date.setMonth(d._id.date.month - 1);
             const obj = {};
             obj.date = `${date.toLocaleString('en-US', { month: 'short' }, { timeZone: "UTC" })} ${d._id.date.day.toString().length == 1 ? (`0`+ d._id.date.day) : d._id.date.day}`;
-            obj.loadCount = d.loadCount;
+            obj.Loads = d.Loads;
             formattedData.push(obj);
         });
 
