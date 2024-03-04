@@ -13,7 +13,7 @@ async function addFuel(fuel) {
     } catch (err) {
         console.error(err);
     }
-    return newPayroll;
+    return newFuel;
 }
 
 async function getAllFuelRows() {
