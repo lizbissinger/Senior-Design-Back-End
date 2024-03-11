@@ -132,7 +132,7 @@ router.get("/:loadId/documents/metadata", async (req, res) => {
 // Endpoint to fetch all documents including binary data for a specific load
 router.get("/:loadId/documents", async (req, res) => {
   const { loadId } = req.params;
-
+  console.log("documents for a load requested")
   try {
     const load = await LoadDetail.findById(loadId).select("documents");
     if (!load) {
