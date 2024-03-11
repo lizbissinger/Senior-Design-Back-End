@@ -3,7 +3,7 @@ const LoadDetail = require("../models/LoadDetail");
 async function getAllLoads() {
   let loads;
   try {
-    loads = await LoadDetail.find();
+    loads = await LoadDetail.find({}, { documents: 0 }); // Excluding documents
   } catch (err) {
     console.error(err);
   }
