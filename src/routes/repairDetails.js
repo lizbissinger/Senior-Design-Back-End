@@ -23,4 +23,19 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// Update repair
+router.patch("/:id", async (req, res) => {
+  try {
+    const updatedRepair = await RepairDetailLib.updateRepairById(
+      req.params.id,
+      req.body
+    );
+    res.json(updatedRepair);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;
