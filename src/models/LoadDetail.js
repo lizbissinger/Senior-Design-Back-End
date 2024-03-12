@@ -7,31 +7,31 @@ const LoadDetailSchema = new mongoose.Schema({
   },
   truckObject: {
     type: String,
-    required: true,
+    required: false,
   },
   trailerObject: {
     type: String,
-    required: true,
+    required: false,
   },
   driverObject: {
     type: String,
-    required: true,
+    required: false,
   },
   pickupTime: {
     type: String,
-    required: true,
+    required: false,
   },
   deliveryTime: {
     type: String,
-    required: true,
+    required: false,
   },
   pickupLocation: {
     type: String,
-    required: true,
+    required: false,
   },
   deliveryLocation: {
     type: String,
-    required: true,
+    required: false,
   },
   documents: [
     {
@@ -42,7 +42,7 @@ const LoadDetailSchema = new mongoose.Schema({
   ],
   price: {
     type: Number,
-    required: true,
+    required: false,
   },
   detentionPrice: {
     type: Number,
@@ -72,11 +72,11 @@ const LoadDetailSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    required: true,
+    required: false,
   },
   updatedAt: {
     type: Date,
-    required: true,
+    required: false,
     default: Date.now,
   },
 });

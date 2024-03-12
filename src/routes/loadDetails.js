@@ -57,7 +57,7 @@ router.post("/", upload.array("documents", 5), async (req, res) => {
 });
 
 router.patch("/:id", upload.array("documents"), async (req, res) => {
-  const newDocuments = req.files
+  const documentUpdates = req.files
     ? req.files.map((file) => ({
         data: file.buffer,
         contentType: file.mimetype,
@@ -65,26 +65,28 @@ router.patch("/:id", upload.array("documents"), async (req, res) => {
       }))
     : [];
 
+  const { documents: _, updatedAt: __, ...restOfBody } = req.body;
+
   try {
     const existingLoad = await loadDetailsLib.getLoadById(req.params.id);
 
-    // Filter newDocuments to exclude any that already exist in existingLoad.documents
-    const filteredNewDocuments = newDocuments.filter(
+    const filteredDocumentUpdates = documentUpdates.filter(
       (newDoc) =>
         !existingLoad.documents.some(
           (existingDoc) => existingDoc.fileName === newDoc.fileName
         )
     );
 
-    // Append only the filtered new documents
-    const updatedDocuments =
-      existingLoad.documents.concat(filteredNewDocuments);
-
-    const updatedLoad = await loadDetailsLib.updateLoadById(req.params.id, {
-      ...req.body,
-      documents: updatedDocuments,
+    const updateData = {
+      ...restOfBody,
+      documents: [...existingLoad.documents, ...filteredDocumentUpdates],
       updatedAt: new Date(),
-    });
+    };
+
+    const updatedLoad = await loadDetailsLib.updateLoadById(
+      req.params.id,
+      updateData
+    );
 
     res.json(updatedLoad);
   } catch (err) {
