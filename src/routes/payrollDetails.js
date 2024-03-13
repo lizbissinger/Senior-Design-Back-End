@@ -37,4 +37,15 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
+// Delete payroll
+router.delete('/:id', async (req, res) => {
+  try {
+      const deletedPayroll = await PayrollDetailLib.deletePayrollById(req.params.id);
+      res.json(deletedPayroll);
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;

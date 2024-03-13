@@ -26,11 +26,21 @@ router.post("/", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
   try {
-    const updatedFuel = await FuelLib.updateFuelById(
-      req.params.id,
-      req.body
-    );
+    const updatedFuel = await FuelLib.updateFuelById(req.params.id, req.body);
     res.json(updatedFuel);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Delete fuel
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedFuel = await FuelLib.deleteFuelById(
+      req.params.id
+    );
+    res.json(deletedFuel);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });

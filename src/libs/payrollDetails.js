@@ -26,9 +26,13 @@ async function getAllPayroll() {
 
 async function updatePayrollById(id, updateData) {
   try {
-    const updatedPayroll = await PayrollDetail.findByIdAndUpdate(id, updateData, {
-      new: true,
-    });
+    const updatedPayroll = await PayrollDetail.findByIdAndUpdate(
+      id,
+      updateData,
+      {
+        new: true,
+      }
+    );
     return updatedPayroll;
   } catch (err) {
     console.error(err);
@@ -36,6 +40,16 @@ async function updatePayrollById(id, updateData) {
   }
 }
 
+async function deletePayrollById(id) {
+  try {
+    const payroll = await PayrollDetail.findByIdAndRemove(id);
+    return payroll;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 module.exports.addPayroll = addPayroll;
 module.exports.getAllPayroll = getAllPayroll;
 module.exports.updatePayrollById = updatePayrollById;
+module.exports.deletePayrollById = deletePayrollById;

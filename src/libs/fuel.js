@@ -37,6 +37,16 @@ async function updateFuelById(id, updateData) {
   }
 }
 
+async function deleteFuelById(id) {
+  try {
+    const fuel = await Fuel.findByIdAndRemove(id);
+    return fuel;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 module.exports.addFuel = addFuel;
 module.exports.getAllFuelRows = getAllFuelRows;
 module.exports.updateFuelById = updateFuelById;
+module.exports.deleteFuelById = deleteFuelById;
