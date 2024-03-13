@@ -56,29 +56,36 @@ router.post("/", upload.array("documents", 5), async (req, res) => {
   }
 });
 
-// Update Load
-
 router.patch("/:id", upload.array("documents"), async (req, res) => {
-  let documents = [];
-  if (req.files) {
-    documents = req.files.map((file) => ({
-      data: file.buffer,
-      contentType: file.mimetype,
-      fileName: file.originalname,
-    }));
-  }
-
-  const updateData = {
-    ...req.body,
-    documents: documents,
-    updatedAt: new Date(),
-  };
+  const newDocuments = req.files
+    ? req.files.map((file) => ({
+        data: file.buffer,
+        contentType: file.mimetype,
+        fileName: file.originalname,
+      }))
+    : [];
 
   try {
-    const updatedLoad = await loadDetailsLib.updateLoadById(
-      req.params.id,
-      updateData
+    const existingLoad = await loadDetailsLib.getLoadById(req.params.id);
+
+    // Filter newDocuments to exclude any that already exist in existingLoad.documents
+    const filteredNewDocuments = newDocuments.filter(
+      (newDoc) =>
+        !existingLoad.documents.some(
+          (existingDoc) => existingDoc.fileName === newDoc.fileName
+        )
     );
+
+    // Append only the filtered new documents
+    const updatedDocuments =
+      existingLoad.documents.concat(filteredNewDocuments);
+
+    const updatedLoad = await loadDetailsLib.updateLoadById(req.params.id, {
+      ...req.body,
+      documents: updatedDocuments,
+      updatedAt: new Date(),
+    });
+
     res.json(updatedLoad);
   } catch (err) {
     console.error(err);
@@ -125,7 +132,7 @@ router.get("/:loadId/documents/metadata", async (req, res) => {
 // Endpoint to fetch all documents including binary data for a specific load
 router.get("/:loadId/documents", async (req, res) => {
   const { loadId } = req.params;
-
+  console.log("documents for a load requested")
   try {
     const load = await LoadDetail.findById(loadId).select("documents");
     if (!load) {
@@ -172,6 +179,35 @@ router.get("/:loadId/documents/:documentId", async (req, res) => {
     res.type(document.contentType);
 
     res.send(document.data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Delete a specific document within a load
+router.delete("/:loadId/documents/:documentId", async (req, res) => {
+  const { loadId, documentId } = req.params;
+
+  try {
+    const load = await LoadDetail.findById(loadId);
+    if (!load) {
+      return res.status(404).json({ message: "Load not found" });
+    }
+
+    const documentIndex = load.documents.findIndex(
+      (doc) => doc._id.toString() === documentId
+    );
+    if (documentIndex === -1) {
+      return res.status(404).json({ message: "Document not found" });
+    }
+
+    load.documents.splice(documentIndex, 1);
+
+    const updatedLoad = await load.save();
+
+    res.json(updatedLoad);
+    console.log("DOCUMENT  DELETED");
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
