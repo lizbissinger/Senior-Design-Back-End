@@ -1,11 +1,11 @@
 const LoadDetail = require("../models/LoadDetail");
 
-async function getAllLoads() {
+async function getAllLoads () {
   let loads;
   try {
-    loads = await LoadDetail.find();
+      loads = await LoadDetail.find();
   } catch (err) {
-    console.error(err);
+      console.error(err);
   }
   return loads;
 }
@@ -48,7 +48,7 @@ async function addLoad(load) {
 
 async function getLoadById(id) {
   try {
-    const load = await LoadDetail.findById(id);
+    const load = await LoadDetail.findById(id, '-documents.data');
     return load;
   } catch (err) {
     console.error(err);
