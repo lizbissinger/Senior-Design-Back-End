@@ -23,4 +23,18 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+router.patch("/:id", async (req, res) => {
+  try {
+    const updatedPayroll = await PayrollDetailLib.updatePayrollById(
+      req.params.id,
+      req.body
+    );
+    res.json(updatedPayroll);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;

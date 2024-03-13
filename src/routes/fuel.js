@@ -23,4 +23,18 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+router.patch("/:id", async (req, res) => {
+  try {
+    const updatedFuel = await FuelLib.updateFuelById(
+      req.params.id,
+      req.body
+    );
+    res.json(updatedFuel);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;
