@@ -47,6 +47,14 @@ router.post("/", upload.array("documents", 5), async (req, res) => {
     load.documents = load.documents || [];
   }
 
+  const numericFields = ["price", "detentionPrice", "allMiles", "fuelGallons"];
+
+  for (const field of numericFields) {
+    if (load[field] === "-") {
+      load[field] = null;
+    }
+  }
+
   try {
     const newLoad = await loadDetailsLib.addLoad(load);
     res.status(201).json(newLoad);
@@ -56,29 +64,38 @@ router.post("/", upload.array("documents", 5), async (req, res) => {
   }
 });
 
-// Update Load
-
 router.patch("/:id", upload.array("documents"), async (req, res) => {
-  let documents = [];
-  if (req.files) {
-    documents = req.files.map((file) => ({
-      data: file.buffer,
-      contentType: file.mimetype,
-      fileName: file.originalname,
-    }));
-  }
+  const documentUpdates = req.files
+    ? req.files.map((file) => ({
+        data: file.buffer,
+        contentType: file.mimetype,
+        fileName: file.originalname,
+      }))
+    : [];
 
-  const updateData = {
-    ...req.body,
-    documents: documents,
-    updatedAt: new Date(),
-  };
+  const { documents: _, updatedAt: __, ...restOfBody } = req.body;
 
   try {
+    const existingLoad = await loadDetailsLib.getLoadById(req.params.id);
+
+    const filteredDocumentUpdates = documentUpdates.filter(
+      (newDoc) =>
+        !existingLoad.documents.some(
+          (existingDoc) => existingDoc.fileName === newDoc.fileName
+        )
+    );
+
+    const updateData = {
+      ...restOfBody,
+      documents: [...existingLoad.documents, ...filteredDocumentUpdates],
+      updatedAt: new Date(),
+    };
+
     const updatedLoad = await loadDetailsLib.updateLoadById(
       req.params.id,
       updateData
     );
+
     res.json(updatedLoad);
   } catch (err) {
     console.error(err);
@@ -172,6 +189,35 @@ router.get("/:loadId/documents/:documentId", async (req, res) => {
     res.type(document.contentType);
 
     res.send(document.data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Delete a specific document within a load
+router.delete("/:loadId/documents/:documentId", async (req, res) => {
+  const { loadId, documentId } = req.params;
+
+  try {
+    const load = await LoadDetail.findById(loadId);
+    if (!load) {
+      return res.status(404).json({ message: "Load not found" });
+    }
+
+    const documentIndex = load.documents.findIndex(
+      (doc) => doc._id.toString() === documentId
+    );
+    if (documentIndex === -1) {
+      return res.status(404).json({ message: "Document not found" });
+    }
+
+    load.documents.splice(documentIndex, 1);
+
+    const updatedLoad = await load.save();
+
+    res.json(updatedLoad);
+    console.log("DOCUMENT  DELETED");
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
