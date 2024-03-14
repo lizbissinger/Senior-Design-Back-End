@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const RepairDetailLib = require("../libs/repairDetails");
+const { deleteDriverById } = require("../libs/driverDetails");
 
 // Fetch All Repairs
 router.get("/", async (req, res) => {
@@ -35,6 +36,17 @@ router.patch("/:id", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Delete repair
+router.delete('/:id', async (req, res) => {
+  try {
+      const deletedRepair = await RepairDetailLib.deleteRepairById(req.params.id);
+      res.json(deletedRepair);
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
   }
 });
 

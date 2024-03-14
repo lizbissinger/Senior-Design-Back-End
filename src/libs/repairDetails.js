@@ -39,6 +39,16 @@ async function updateRepairById(id, updateData) {
   }
 }
 
+async function deleteRepairById(id) {
+  try {
+    const repair = await RepairDetail.findByIdAndRemove(id);
+    return repair;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 module.exports.addRepair = addRepair;
 module.exports.getAllRepairs = getAllRepairs;
 module.exports.updateRepairById = updateRepairById;
+module.exports.deleteRepairById = deleteRepairById;
