@@ -368,7 +368,7 @@ async function getNumberOfMiles (driver = null, from = null, to = null) {
             date.setMonth(d._id.date.month - 1);
             const obj = {};
             obj.date = `${date.toLocaleString('en-US', { month: 'short' }, { timeZone: "UTC" })} ${d._id.date.day.toString().length == 1 ? (`0`+ d._id.date.day) : d._id.date.day}`;
-            obj.Miles = d.Miles;
+            obj.Miles = Math.round(d.Miles * 10) / 10;
             formattedData.push(obj);
         });
 
