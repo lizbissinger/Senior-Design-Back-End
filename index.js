@@ -7,6 +7,7 @@ const driverDetailsRouter = require('./src/routes/driverDetails');
 const trailerDetailsRouter = require('./src/routes/trailerDetails');
 const truckDetailsRouter = require('./src/routes/truckDetails');
 const reportsRouter = require('./src/routes/reports');
+const financeRouter = require('./src/routes/finance');
 const repairDetailsRouter = require('./src/routes/repairDetails');
 const payrollDetailsRouter = require('./src/routes/payrollDetails');
 const fuelRouter = require('./src/routes/fuel');
@@ -20,6 +21,7 @@ app.use('/driverDetails', driverDetailsRouter);
 app.use('/trailerDetails', trailerDetailsRouter);
 app.use('/truckDetails', truckDetailsRouter);
 app.use('/reports', reportsRouter);
+app.use('/finance', financeRouter);
 app.use('/repairs', repairDetailsRouter);
 app.use('/payroll', payrollDetailsRouter); //try payrolls
 app.use('/fuel', fuelRouter);
