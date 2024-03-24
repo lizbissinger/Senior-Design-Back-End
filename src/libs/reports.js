@@ -56,6 +56,16 @@ async function getAllRevenue (driver = null, from = null, to = null) {
                             $dateFromString: { dateString: "$deliveryTime" }
                         }
                     },
+                    month : {
+                        $month: {
+                            $dateFromString: { dateString: "$deliveryTime" }
+                        }
+                    },
+                    year : {
+                        $year: {
+                            $dateFromString: { dateString: "$deliveryTime" }
+                        }
+                    }
                 }
             },
             count: { $count: { } }
